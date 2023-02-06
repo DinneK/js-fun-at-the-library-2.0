@@ -1,36 +1,32 @@
 var assert = require("chai").assert;
 
-var {
-  createLibrary,
-  addBook,
-  checkoutBook
-} = require("../src/library.js")
+var { createLibrary, addBook, checkoutBook } = require("../src/library.js");
 
-describe("library.js", function() {
-  describe("createLibrary", function() {
-    it.skip("should be a function", function() {
+describe("library.js", function () {
+  describe("createLibrary", function () {
+    it("should be a function", function () {
       assert.isFunction(createLibrary);
     });
 
-    it.skip("should have a name", function() {
+    it("should have a name", function () {
       var denverLibrary = createLibrary("Denver Public Library");
 
-    assert.equal(denverLibrary.name, "Denver Public Library");
+      assert.equal(denverLibrary.name, "Denver Public Library");
     });
 
-    it.skip("should be able to have a different name", function() {
+    it("should be able to have a different name", function () {
       var goldenLibrary = createLibrary("Golden Public Library");
 
       assert.equal(goldenLibrary.name, "Golden Public Library");
     });
 
-    it.skip("should have shelves", function() {
+    it("should have shelves", function () {
       var denverLibrary = createLibrary("Denver Public Library");
 
       assert.isObject(denverLibrary.shelves);
     });
 
-    it.skip("should have several different types of shelves", function() {
+    it("should have several different types of shelves", function () {
       var denverLibrary = createLibrary("Denver Public Library");
 
       assert.deepEqual(denverLibrary.shelves.fantasy, []);
@@ -39,35 +35,43 @@ describe("library.js", function() {
     });
   });
 
-  describe("addBook", function() {
-    it.skip("should add book to the fantasy shelf", function() {
+  describe("addBook", function () {
+    it("should add book to the fantasy shelf", function () {
       var denverLibrary = createLibrary("Denver Public Library");
       var dracula = {
         title: "Dracula",
-        mainCharacter: { name: "Count Dracula", age: undefined, pronouns: "he/him" },
+        mainCharacter: {
+          name: "Count Dracula",
+          age: undefined,
+          pronouns: "he/him",
+        },
         pageCount: 418,
-        genre: "fantasy"
-      }
+        genre: "fantasy",
+      };
 
       addBook(denverLibrary, dracula);
 
       assert.equal(denverLibrary.shelves.fantasy[0], dracula);
     });
 
-    it.skip("should add books to the correct shelves automatically", function() {
+    it("should add books to the correct shelves automatically", function () {
       var denverLibrary = createLibrary("Denver Public Library");
       var dracula = {
         title: "Dracula",
-        mainCharacter: { name: "Count Draula", age: undefined, pronouns: "he/him" },
+        mainCharacter: {
+          name: "Count Draula",
+          age: undefined,
+          pronouns: "he/him",
+        },
         pageCount: 418,
-        genre: "fantasy"
-      }
+        genre: "fantasy",
+      };
       var paleBlueDot = {
         title: "The Pale Blue Dot",
         mainCharacter: undefined,
         pageCount: 187,
-        genre: 'nonFiction'
-      }
+        genre: "nonFiction",
+      };
 
       addBook(denverLibrary, dracula);
       addBook(denverLibrary, paleBlueDot);
@@ -77,53 +81,85 @@ describe("library.js", function() {
     });
   });
 
-  describe("checkoutBook", function() {
-    it.skip("should unshelf a book to check out a book to a patron", function() {
+  describe("checkoutBook", function () {
+    it("should unshelf a book to check out a book to a patron", function () {
       var dracula = {
         title: "Dracula",
-        mainCharacter: { name: "Count Dracula", age: undefined, pronouns: "he/him" },
+        mainCharacter: {
+          name: "Count Dracula",
+          age: undefined,
+          pronouns: "he/him",
+        },
         pageCount: 418,
-        genre: "fantasy"
-      }
+        genre: "fantasy",
+      };
       var bornACrime = {
         title: "Born a Crime",
         mainCharacter: { name: "Trevor Noah", age: 36, pronouns: "he/him" },
         pageCount: 304,
-        genre: "nonFiction"
-      }
+        genre: "nonFiction",
+      };
       var prideAndPrejudice = {
         title: "Pride and Prejudice",
-        mainCharacter: { name: "Eliabeth Bennet", age: 20, pronouns: "she/her" },
+        mainCharacter: {
+          name: "Eliabeth Bennet",
+          age: 20,
+          pronouns: "she/her",
+        },
         pageCount: 432,
-        genre: "fiction"
-      }
+        genre: "fiction",
+      };
       var denverLibrary = createLibrary("Denver Public Library");
 
       addBook(denverLibrary, dracula);
       addBook(denverLibrary, bornACrime);
       addBook(denverLibrary, prideAndPrejudice);
 
-      var result1 = checkoutBook(denverLibrary, "Pride and Prejudice", "fiction");
+      var result1 = checkoutBook(
+        denverLibrary,
+        "Pride and Prejudice",
+        "fiction"
+      );
 
-      assert.deepEqual(denverLibrary.shelves, {fantasy: [dracula], fiction: [], nonFiction: [bornACrime]});;
-      assert.equal(result1, "You have now checked out Pride and Prejudice from the Denver Public Library");
+      assert.deepEqual(denverLibrary.shelves, {
+        fantasy: [dracula],
+        fiction: [],
+        nonFiction: [bornACrime],
+      });
+      assert.equal(
+        result1,
+        "You have now checked out Pride and Prejudice from the Denver Public Library"
+      );
 
       var result2 = checkoutBook(denverLibrary, "Born a Crime", "nonFiction");
 
-      assert.deepEqual(denverLibrary.shelves, {fantasy: [dracula], fiction: [], nonFiction: []});;
-      assert.equal(result2, "You have now checked out Born a Crime from the Denver Public Library")
+      assert.deepEqual(denverLibrary.shelves, {
+        fantasy: [dracula],
+        fiction: [],
+        nonFiction: [],
+      });
+      assert.equal(
+        result2,
+        "You have now checked out Born a Crime from the Denver Public Library"
+      );
     });
 
-    it.skip("should only checkout a book if the book is on the shelves", function() {
+    it("should only checkout a book if the book is on the shelves", function () {
       var denverLibrary = createLibrary("Denver Public Library");
 
       var error1 = checkoutBook(denverLibrary, "The Fifth Season", "fantasy");
 
-      assert.equal(error1, "Sorry, there are currently no copies of The Fifth Season available at the Denver Public Library");
+      assert.equal(
+        error1,
+        "Sorry, there are currently no copies of The Fifth Season available at the Denver Public Library"
+      );
 
       var error2 = checkoutBook(denverLibrary, "Yes Please", "nonFiction");
 
-      assert.equal(error2, "Sorry, there are currently no copies of Yes Please available at the Denver Public Library");
+      assert.equal(
+        error2,
+        "Sorry, there are currently no copies of Yes Please available at the Denver Public Library"
+      );
     });
   });
 });
